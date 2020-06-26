@@ -3,7 +3,7 @@ import gmaps
 import pandas as pd
 import gmaps.datasets
 
-gmaps.configure(api_key='AIzaSyDOiBsOZJDLG01tAvg6V6QadxPw79-Jefg')
+gmaps.configure(api_key='')
 
 noise_pol = pd.read_csv('avg.csv')
 weights = noise_pol['noise index']
