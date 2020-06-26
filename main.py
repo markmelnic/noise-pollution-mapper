@@ -66,7 +66,7 @@ while True:
     lat = dv.find_element_by_id("latitude").get_attribute("value")
     lng = dv.find_element_by_id("longitude").get_attribute("value")
 
-    # process and write the average noise
+    # process and write average noise data
     with open("avg.csv", "a", newline='') as avgFile:
         # generate writer object for changes file
         avgWriter = csv.writer(avgFile)
@@ -85,8 +85,3 @@ killb(dv)
 
 # print total execution time  
 print("--- %s seconds ---" % (time.time() - start_time))
-'''
-if __name__ == '__main__':
-    g = geocoder.ip('me')
-    print(g.latlng)
-'''
