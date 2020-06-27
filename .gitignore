@@ -3,3 +3,5 @@ key.txt
 chromedriver83.exe
 __pycache__/selen_module.cpython-37.pyc
 /.vscode
+android_device.txt
+/__pycache__
