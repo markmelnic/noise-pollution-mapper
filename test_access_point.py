@@ -5,6 +5,7 @@ import googlemaps
 with open("key.txt", mode='r') as keyfile:
     key = keyfile.read().splitlines()
     keyfile.close()
+    
 gmaps = googlemaps.Client(key = key[1])
     
 celltower = {
@@ -19,7 +20,14 @@ wifiaccess = {
 }
 
 try:
-    loc = gmaps.geolocate('259', '2', 'lte', 'Moldcell', True, list(celltower))
+    loc = gmaps.geolocate('259', 
+                          '2', 
+                          'lte', 
+                          'Moldcell', 
+                          True, 
+                          list(celltower)
+                          )
+
     print(loc)
 except Exception as e:
     print(e.message)
