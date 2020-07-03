@@ -20,7 +20,7 @@ def print_sound(indata, outdata, frames, time, status):
 
 
 if __name__=='__main__':
-    
+
     global noise_data
 
     # get execution start time
@@ -44,6 +44,7 @@ if __name__=='__main__':
             csvWriter.writerow(["noise index", "latitude", "longitude", "timeframe"])
             csvFile.close()
         
+    # start collecting data
     while True:
         try:
             noise_data = []
@@ -55,20 +56,24 @@ if __name__=='__main__':
             coords = exec_gps()
             lat = coords[0]
             lng = coords[1]
-            if not float(lat) > -90 and float(lat) < 90:
+            if float(lat) < -90 and float(lat) > 90:
                 continue
-            if not float(lng) > -90 and float(lng) < 90:
+            if float(lng) < -90 and float(lng) > 90:
                 continue
 
             # process and write average noise data
             with open("avg.csv", "a", newline='') as avgFile:
                 # generate writer object for changes file
                 avgWriter = csv.writer(avgFile)
+
+                # get the average noise index
                 noise_avg = 0
                 for n in noise_data:
                     noise_avg += float(n)
                     
                 noise_avg = str(noise_avg/len(noise_data))
+
+                # write to dataset
                 print(noise_avg + " average for " + str(len(noise_data)) + " values at latitude " + lat + " and longitude " + lng + "\n----------")
                 avgWriter.writerow([noise_avg, lat, lng, time.time()])
                 avgFile.close()
