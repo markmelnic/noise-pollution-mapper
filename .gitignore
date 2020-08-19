@@ -5,3 +5,6 @@ __pycache__/selen_module.cpython-37.pyc
 /.vscode
 android_device.txt
 /__pycache__
+/Scripts
+/Lib
+pyvenv.cfg
