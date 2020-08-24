@@ -29,20 +29,20 @@ if __name__=='__main__':
 
     # write first line if file is empty
     try:
-        with open('avg.csv', 'r', newline='') as csvFile:
-            csvReader = csv.reader(csvFile)
-            data = list(csvReader)
+        with open('avg.csv', 'r', newline='') as csv_file:
+            csv_reader = csv.reader(csv_file)
+            data = list(csv_reader)
             
         if data == '':
-            with open('avg.csv', 'w', newline='') as csvFile:
-                csvWriter = csv.writer(csvFile)
-                csvWriter.writerow(["noise index", "latitude", "longitude", "timeframe"])
-                csvFile.close()
+            with open('avg.csv', 'w', newline='') as csv_file:
+                csv_writer = csv.writer(csv_file)
+                csv_writer.writerow(["noise index", "latitude", "longitude", "timeframe"])
+                csv_file.close()
     except:
-        with open('avg.csv', 'w', newline='') as csvFile:
-            csvWriter = csv.writer(csvFile)
-            csvWriter.writerow(["noise index", "latitude", "longitude", "timeframe"])
-            csvFile.close()
+        with open('avg.csv', 'w', newline='') as csv_file:
+            csv_writer = csv.writer(csv_file)
+            csv_writer.writerow(["noise index", "latitude", "longitude", "timeframe"])
+            csv_file.close()
         
     # start collecting data
     while True:
