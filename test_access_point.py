@@ -15,16 +15,16 @@ def access_point():
     }
 
     locator = {
-    "homeMobileCountryCode": 259,
-    "homeMobileNetworkCode": 2,
-    "radioType": "wcdma",
-    "carrier": "Vodafone",
-    "considerIp": "true",
+    "homeMobileCountryCode": 204,
+    "homeMobileNetworkCode": 10,
+    "radioType": "lte",
+    "carrier": "KPN",
+    "considerIp": "false",
     "cellTowers": {
-        "cellId": 42345,
-        "locationAreaCode": 4002,
-        "mobileCountryCode": 259,
-        "mobileNetworkCode": 2}
+        "cellId": 60141,
+        "locationAreaCode": 6400,
+        "mobileCountryCode": 204,
+        "mobileNetworkCode": 10}
     }
 
     response = gmaps.geolocate(locator)

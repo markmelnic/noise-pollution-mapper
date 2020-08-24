@@ -1,7 +1,5 @@
 
-import sys
-import csv
-import time
+import sys, csv, time
 import numpy as np 
 import pandas as pd 
 import sounddevice as sd
@@ -32,7 +30,7 @@ if __name__=='__main__':
         with open('avg.csv', 'r', newline='') as csv_file:
             csv_reader = csv.reader(csv_file)
             data = list(csv_reader)
-            
+
         if data == '':
             with open('avg.csv', 'w', newline='') as csv_file:
                 csv_writer = csv.writer(csv_file)
@@ -41,7 +39,7 @@ if __name__=='__main__':
         with open('avg.csv', 'w', newline='') as csv_file:
             csv_writer = csv.writer(csv_file)
             csv_writer.writerow(["noise index", "latitude", "longitude", "timeframe"])
-        
+
     # start collecting data
     while True:
         try:
@@ -49,8 +47,8 @@ if __name__=='__main__':
             # collect data for mil timeframe
             with sd.Stream(callback=print_sound):
                 sd.sleep(1000)
-            
-            # get gps coordinates using PowerShell
+
+            # get ip gps coordinates
             coords = exec_gps()
             lat = coords[0]
             lng = coords[1]
@@ -60,20 +58,19 @@ if __name__=='__main__':
                 continue
 
             # process and write average noise data
-            with open("avg.csv", "a", newline='') as avgFile:
-                # generate writer object for changes file
-                avgWriter = csv.writer(avgFile)
+            with open("avg.csv", "a", newline='') as avg_file:
+                avg_writer = csv.writer(avg_file)
 
                 # get the average noise index
                 noise_avg = 0
-                for n in noise_data:
-                    noise_avg += float(n)
+                for nd in noise_data:
+                    noise_avg += float(nd)
                     
                 noise_avg = str(noise_avg/len(noise_data))
 
                 # write to dataset
                 print(noise_avg + " average for " + str(len(noise_data)) + " values at latitude " + lat + " and longitude " + lng + "\n----------")
-                avgWriter.writerow([noise_avg, lat, lng, time.time()])
+                avg_writer.writerow([noise_avg, lat, lng, time.time()])
 
         except IndexError:
             pass
