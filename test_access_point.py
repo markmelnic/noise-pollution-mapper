@@ -14,19 +14,21 @@ def access_point():
         "mobileNetworkCode": 2
     }
 
-    # sample wifi access point
-    wifiaccess = {
+    locator = {
+    "homeMobileCountryCode": 259,
+    "homeMobileNetworkCode": 2,
+    "radioType": "wcdma",
+    "carrier": "Vodafone",
+    "considerIp": "true",
+    "cellTowers": {
+        "cellId": 42345,
+        "locationAreaCode": 4002,
+        "mobileCountryCode": 259,
+        "mobileNetworkCode": 2}
     }
 
-    try:
-        loc = gmaps.geolocate('259', 
-                            '2', 
-                            'lte', 
-                            'Moldcell', 
-                            True, 
-                            list(celltower)
-                            )
+    response = gmaps.geolocate(locator)
+    print(response)
 
-        print(loc)
-    except Exception as e:
-        print(e.message)
+if __name__ == '__main__':
+    access_point()

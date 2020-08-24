@@ -37,12 +37,10 @@ if __name__=='__main__':
             with open('avg.csv', 'w', newline='') as csv_file:
                 csv_writer = csv.writer(csv_file)
                 csv_writer.writerow(["noise index", "latitude", "longitude", "timeframe"])
-                csv_file.close()
     except:
         with open('avg.csv', 'w', newline='') as csv_file:
             csv_writer = csv.writer(csv_file)
             csv_writer.writerow(["noise index", "latitude", "longitude", "timeframe"])
-            csv_file.close()
         
     # start collecting data
     while True:
@@ -76,7 +74,6 @@ if __name__=='__main__':
                 # write to dataset
                 print(noise_avg + " average for " + str(len(noise_data)) + " values at latitude " + lat + " and longitude " + lng + "\n----------")
                 avgWriter.writerow([noise_avg, lat, lng, time.time()])
-                avgFile.close()
 
         except IndexError:
             pass
