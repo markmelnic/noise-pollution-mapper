@@ -8,26 +8,25 @@ def access_point():
 
     # sample cell tower
     celltower = {
-        "cellId": 42345,
-        "locationAreaCode": 4002,
-        "mobileCountryCode": 259,
-        "mobileNetworkCode": 2
-    }
+        "cellId": 49761,
+        "locationAreaCode": 212,
+        "mobileCountryCode": 204,
+        "mobileNetworkCode": 8
+        }
+
+    celltowers = []
 
     locator = {
     "homeMobileCountryCode": 204,
-    "homeMobileNetworkCode": 10,
+    "homeMobileNetworkCode": 8,
     "radioType": "lte",
     "carrier": "KPN",
-    "considerIp": "false",
-    "cellTowers": {
-        "cellId": 60141,
-        "locationAreaCode": 6400,
-        "mobileCountryCode": 204,
-        "mobileNetworkCode": 10}
+    "considerIp": "true",
+    "cellTowers": {}
     }
 
-    response = gmaps.geolocate(locator)
+
+    response = gmaps.geolocate(204, 8, 'lte', 'KPN', False, celltower)
     print(response)
 
 if __name__ == '__main__':

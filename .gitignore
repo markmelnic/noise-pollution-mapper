@@ -9,3 +9,4 @@ android_device.txt
 /Lib
 pyvenv.cfg
 key.py
+*.csv
