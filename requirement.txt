@@ -1,0 +1,7 @@
+googlemaps==4.4.2
+gps==3.19
+gps3==0.33.3
+key==0.4
+numpy==1.19.1
+pandas==1.1.1
+sounddevice==0.4.0

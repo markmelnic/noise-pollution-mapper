@@ -3,7 +3,6 @@ import bluetooth
 
 with open("android_device.txt", mode='r') as android_device:
     creds = android_device.read().splitlines()
-    android_device.close()
 target_name = creds[0]
 target_address = creds[1]
 port = 3

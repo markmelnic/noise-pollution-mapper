@@ -1,12 +1,6 @@
-avg.csv
-key.txt
-chromedriver83.exe
-__pycache__/selen_module.cpython-37.pyc
 /.vscode
-android_device.txt
 /__pycache__
-/Scripts
-/Lib
-pyvenv.cfg
-key.py
+*.json
 *.csv
+*.exe
+key.py
