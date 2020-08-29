@@ -7,12 +7,25 @@ def access_point():
     gmaps = googlemaps.Client(key = KEY2)
 
     # sample cell tower
-    celltower = {
+    celltowers = [{
         "cellId": 49761,
-        "locationAreaCode": 212,
+        "locationAreaCode": 26002,
+        "mobileCountryCode": 20,
+        "mobileNetworkCode": 10
+        },
+        {
+        "cellId": 27111,
+        "locationAreaCode": 1009,
         "mobileCountryCode": 204,
-        "mobileNetworkCode": 8
+        "mobileNetworkCode": 16
+        },
+        {
+        "cellId": 27161,
+        "locationAreaCode": 1003,
+        "mobileCountryCode": 204,
+        "mobileNetworkCode": 16
         }
+    ]
 
     celltowers = []
 
@@ -26,7 +39,7 @@ def access_point():
     }
 
 
-    response = gmaps.geolocate(204, 8, 'lte', 'KPN', False, celltower)
+    response = gmaps.geolocate(204, 8, 'gsm', 'Base/KPN', True, celltowers)
     print(response)
 
 if __name__ == '__main__':
