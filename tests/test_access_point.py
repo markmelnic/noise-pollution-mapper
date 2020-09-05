@@ -27,8 +27,6 @@ def access_point():
         }
     ]
 
-    celltowers = []
-
     locator = {
     "homeMobileCountryCode": 204,
     "homeMobileNetworkCode": 8,

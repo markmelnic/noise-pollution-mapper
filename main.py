@@ -4,7 +4,8 @@ import numpy as np
 import pandas as pd 
 import sounddevice as sd
 
-from psl_exec import exec_gps
+from iploc.loc_tools import ipinfo
+from resources.mls_handler import MLS
 
 # format printed output for sound
 def print_sound(indata, outdata, frames, time, status):
@@ -48,8 +49,8 @@ if __name__=='__main__':
             with sd.Stream(callback=print_sound):
                 sd.sleep(1000)
 
-            # get ip gps coordinates
-            coords = exec_gps()
+            # get gps coordinates
+            coords = gmaps.geolocate(204, 8, 'gsm', 'Base/KPN', True, celltowers)
             lat = coords[0]
             lng = coords[1]
             if float(lat) < -90 and float(lat) > 90:
