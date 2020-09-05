@@ -4,6 +4,9 @@ import numpy as np
 import pandas as pd 
 import sounddevice as sd
 
+import googlemaps
+
+from key import KEY2
 from iploc.loc_tools import ipinfo
 from resources.mls_handler import MLS
 
@@ -35,11 +38,44 @@ if __name__=='__main__':
         if data == '':
             with open('avg.csv', 'w', newline='') as csv_file:
                 csv_writer = csv.writer(csv_file)
-                csv_writer.writerow(["noise index", "latitude", "longitude", "timeframe"])
+                csv_writer.writerow(["noise index", "latitude", "longitude", "accuracy", "timeframe"])
     except:
         with open('avg.csv', 'w', newline='') as csv_file:
             csv_writer = csv.writer(csv_file)
-            csv_writer.writerow(["noise index", "latitude", "longitude", "timeframe"])
+            csv_writer.writerow(["noise index", "latitude", "longitude", "accuracy", "timeframe"])
+
+        # generate datasets
+    print("Running MLS checks")
+    mls = MLS()
+    print("Getting IP information")
+    ip = ipinfo()
+    mcc_dataset = mls.get_mcc(ip.mcc)
+    print("Sorting dataset")
+    sorted_dataset = mls.sort_data(mcc_dataset, ip.initial_coords)
+
+    cell_towers = []
+    for data in sorted_dataset:
+        if sorted_dataset.index(data) == 0:
+            continue
+        if sorted_dataset.index(data) == 10:
+            break
+        tower = {}
+        tower['cellId'] = data[4]
+        tower['locationAreaCode'] = data[3]
+        tower['mobileCountryCode'] = data[1]
+        tower['mobileNetworkCode'] = data[2]
+        cell_towers.append(tower)
+
+    locator = {
+    "homeMobileCountryCode": sorted_dataset[0][1],
+    "homeMobileNetworkCode": sorted_dataset[0][2],
+    "radioType": sorted_dataset[0][0],
+    "carrier": sorted_dataset[0][8],
+    "considerIp": "false",
+    "cellTowers": {}
+    }
+
+    gmaps = googlemaps.Client(key = KEY2)
 
     # start collecting data
     while True:
@@ -50,13 +86,10 @@ if __name__=='__main__':
                 sd.sleep(1000)
 
             # get gps coordinates
-            coords = gmaps.geolocate(204, 8, 'gsm', 'Base/KPN', True, celltowers)
-            lat = coords[0]
-            lng = coords[1]
-            if float(lat) < -90 and float(lat) > 90:
-                continue
-            if float(lng) < -90 and float(lng) > 90:
-                continue
+            coords = gmaps.geolocate(sorted_dataset[0][1], sorted_dataset[0][2], sorted_dataset[0][0], sorted_dataset[0][8], False, cell_towers)
+            lat = coords['location']['lat']
+            lng = coords['location']['lng']
+            acr = coords['accuracy']
 
             # process and write average noise data
             with open("avg.csv", "a", newline='') as avg_file:
@@ -70,8 +103,8 @@ if __name__=='__main__':
                 noise_avg = str(noise_avg/len(noise_data))
 
                 # write to dataset
-                print(noise_avg + " average for " + str(len(noise_data)) + " values at latitude " + lat + " and longitude " + lng + "\n----------")
-                avg_writer.writerow([noise_avg, lat, lng, time.time()])
+                #print(noise_avg + " average for " + str(len(noise_data)) + " values at latitude " + str(lat) + " and longitude " + str(lng) + "\n----------")
+                avg_writer.writerow([noise_avg, lat, lng, acr, time.time()])
 
         except IndexError:
             pass
