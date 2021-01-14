@@ -1,4 +1,4 @@
-
+'''
 import bluetooth
 
 with open("android_device.txt", mode='r') as android_device:
@@ -38,3 +38,4 @@ while True:
     print(data)
 
 socket.close()
+'''
