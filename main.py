@@ -6,7 +6,7 @@ import sounddevice as sd
 
 import googlemaps
 
-from key import KEY2
+from key import GMAPS_KEY
 from iploc.loc_tools import ipinfo
 from resources.mls_handler import MLS
 
@@ -77,53 +77,51 @@ if __name__=='__main__':
     print("Sorting dataset")
     sorted_dataset = mls.sort_data(mcc_dataset, ip.initial_coords)
 
-    gmaps = googlemaps.Client(key = KEY2)
+    gmaps = googlemaps.Client(key = GMAPS_KEY)
 
     # start collecting data
     while True:
         try:
-            for tower in tower_yielder(sorted_dataset):
-                print(tower)
-                cell = {}
-                cell['cellId'] = tower[4]
-                cell['locationAreaCode'] = tower[3]
-                cell['mobileCountryCode'] = tower[1]
-                cell['mobileNetworkCode'] = tower[2]
-                try:
-                    noise_data = []
-                    # collect data for mil timeframe
-                    with sd.Stream(callback=print_sound):
-                        sd.sleep(1000)
+            with open("avg.csv", "a", newline='') as avg_file:
+                avg_writer = csv.writer(avg_file)
+                for tower in tower_yielder(sorted_dataset):
+                    print(tower)
+                    cell = {}
+                    cell['cellId'] = tower[4]
+                    cell['locationAreaCode'] = tower[3]
+                    cell['mobileCountryCode'] = tower[1]
+                    cell['mobileNetworkCode'] = tower[2]
+                    try:
+                        noise_data = []
+                        # collect data for mil timeframe
+                        with sd.Stream(callback=print_sound):
+                            sd.sleep(1000)
 
-                    # get gps coordinates
-                    coords = gmaps.geolocate(tower[1], tower[2], tower[0], tower[8], False, cell)
-                    lat = coords['location']['lat']
-                    lng = coords['location']['lng']
-                    acr = coords['accuracy']
-
-                    # process and write average noise data
-                    with open("avg.csv", "a", newline='') as avg_file:
-                        avg_writer = csv.writer(avg_file)
+                        # get gps coordinates
+                        coords = gmaps.geolocate(tower[1], tower[2], tower[0], tower[8], False, cell)
+                        lat = coords['location']['lat']
+                        lng = coords['location']['lng']
+                        acr = coords['accuracy']
 
                         # get the average noise index
                         noise_avg = 0
                         for nd in noise_data:
                             noise_avg += float(nd)
-                            
+
                         noise_avg = str(noise_avg/len(noise_data))
 
                         # write to dataset
                         avg_writer.writerow([noise_avg, lat, lng, acr, time.time(), cell['cellId']])
 
-                except googlemaps.exceptions.ApiError:
-                    sorted_dataset.remove(tower)
-                    pass
+                    except googlemaps.exceptions.ApiError:
+                        sorted_dataset.remove(tower)
+                        pass
 
-                except IndexError:
-                    pass
+                    except IndexError:
+                        pass
 
-                except KeyboardInterrupt:
-                    raise Breaker
+                    except KeyboardInterrupt:
+                        raise Breaker
 
         except Breaker:
             break
