@@ -1,6 +1,6 @@
 
 import googlemaps
-from key import KEY2
+from key import GMAPS_KEY
 
 def access_point():
 
