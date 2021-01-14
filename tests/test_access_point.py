@@ -4,7 +4,7 @@ from key import GMAPS_KEY
 
 def access_point():
 
-    gmaps = googlemaps.Client(key = KEY2)
+    gmaps = googlemaps.Client(key = GMAPS_KEY)
 
     # sample cell tower
     celltowers = [{
